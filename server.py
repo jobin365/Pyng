@@ -13,10 +13,12 @@ def handle_connection(conn, addr, client_index):
             data = conn.recv(1024)
             if not data:
                 break
-            for index, client in enumerate(clients):
-                if not index == client_index:
-                    client.sendall(data)
+            broadcast(data, client_index)
 
+def broadcast(data, client_index):
+    for index, client in enumerate(clients):
+        if not index == client_index:
+            client.sendall(data)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
