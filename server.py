@@ -12,6 +12,7 @@ def handle_connection(conn, addr, client_index):
         while True:
             data = conn.recv(1024)
             if not data:
+                del clients[client_index]
                 break
             broadcast(data, client_index)
 
