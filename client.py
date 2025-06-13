@@ -12,7 +12,10 @@ session = PromptSession()
 
 def receive_message(s):
     while True:
-        data = s.recv(1024)
+        try:
+            data = s.recv(1024)
+        except ConnectionAbortedError:
+            break
         print(data.decode('ascii'))
 
 
@@ -22,7 +25,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     t2 = threading.Thread(target=receive_message, args=(s,))
     t2.start()
-
+    
     while True:
         with patch_stdout():
-            s.sendall(f'{user_name}: {session.prompt(f"{user_name}: ")}'.encode("ascii"))
+            client_message = session.prompt(f"{user_name}: ")
+            if client_message == 'exit_chat':
+                s.sendall(f'{user_name} left the chat.'.encode("ascii"))
+                break
+            s.sendall(f'{user_name}: {client_message}'.encode("ascii"))
