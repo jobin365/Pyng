@@ -28,5 +28,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     
     while True:
         with patch_stdout():
-            client_message = session.prompt(f"{user_name}: ")
+            try:
+                client_message = session.prompt(f"{user_name}: ")
+            except KeyboardInterrupt:
+                break
             s.sendall(f'{user_name}: {client_message}'.encode("ascii"))
