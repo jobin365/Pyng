@@ -16,6 +16,9 @@ def receive_message(s):
             data = s.recv(1024)
         except ConnectionAbortedError:
             break
+        except ConnectionResetError:
+            print('SERVER DISCONNECTED.')
+            break
         print(data.decode('ascii'))
 
 
@@ -32,4 +35,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 client_message = session.prompt(f"{user_name}: ")
             except KeyboardInterrupt:
                 break
-            s.sendall(f'{user_name}: {client_message}'.encode("ascii"))
+            try:
+                s.sendall(f'{user_name}: {client_message}'.encode("ascii"))
+            except ConnectionResetError:
+                break
