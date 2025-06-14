@@ -32,11 +32,6 @@ def handle_connection(conn, addr):
                 client_index = get_client_index(conn, clients)
                 del clients[client_index]
                 break
-            if not data:
-                print("client closed connection normally")
-                client_index = get_client_index(conn, clients)
-                del clients[client_index]
-                break
             client_index = get_client_index(conn, clients)
             logger.debug("Client index: "+ str(client_index))
             broadcast(data, client_index)
