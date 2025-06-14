@@ -21,7 +21,7 @@ def receive_message(s):
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    s.sendall(f'{user_name} entered the chat.'.encode('ascii'))
+    s.sendall(f'USERNAME: {user_name}'.encode('ascii'))
 
     t2 = threading.Thread(target=receive_message, args=(s,))
     t2.start()
