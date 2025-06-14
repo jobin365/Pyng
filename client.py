@@ -29,7 +29,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     while True:
         with patch_stdout():
             client_message = session.prompt(f"{user_name}: ")
-            if client_message == 'exit_chat':
-                s.sendall(f'{user_name} left the chat.'.encode("ascii"))
-                break
             s.sendall(f'{user_name}: {client_message}'.encode("ascii"))
